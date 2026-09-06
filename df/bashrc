@@ -1,0 +1,5 @@
+# --- containers ---
+alias dev-build='cd "$HOME/dots/df" && podman build -f dev.docker -t dev'
+alias dev='podman run --rm -it -v dev-vol:/root/.local -v "$PWD:/work" -w /work dev '
+alias opencode-build='cd "$HOME/dots/df" && podman build -f opencode.docker -t opencode'
+alias opencode='podman run --rm -it -v opencode-vol:/root/.local -v "$PWD:/work" -w /work opencode '

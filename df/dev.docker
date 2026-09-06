@@ -1,0 +1,38 @@
+FROM alpine:latest
+
+RUN apk add --no-cache \
+    neovim \
+    git \
+    bash \
+    ripgrep \
+    curl \
+    clang \
+    nodejs \
+    npm \
+    lua-language-server \
+    stylua \
+    py3-lsp-server \
+    gopls \
+    rust-analyzer \
+    rustfmt \
+    go \
+    python3
+
+RUN npm install --global typescript-language-server
+
+RUN mkdir -p /root/.config/nvim
+COPY init.lua /root/.config/nvim/init.lua
+RUN cat > /root/.bashrc <<'EOF'
+if [ -n "$PS1" ]; then
+	PS1='\[\e[38;5;39m\]dev\[\e[0m\] \[\e[38;5;245m\]\w\[\e[0m\] \[\e[38;5;185m\]\$\[\e[0m\] '
+fi
+EOF
+
+# Install/sync plugins managed by lazy.nvim. Run twice: the first installs,
+# the second verifies the config loads cleanly.
+RUN nvim --headless "+Lazy! sync" +qa
+RUN nvim --headless "+Lazy! sync" +qa
+
+WORKDIR /workspace
+
+ENTRYPOINT ["bash", "-c", "if [ $# -eq 0 ]; then exec bash -i; else exec \"$@\"; fi", "--"]

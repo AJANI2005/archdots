@@ -1,0 +1,5 @@
+# xdg-desktop-portal-wlr
+# Always prompt with slurp for what to share
+output_name=none
+chooser_type=simple
+chooser_cmd=slurp -f %o -or

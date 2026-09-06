@@ -1,0 +1,32 @@
+# swaylock - dark with red accent
+color=141417
+
+ring-color=55555a
+ring-ver-color=9c3a44
+ring-wrong-color=ff2e42
+ring-clear-color=66666b
+
+inside-color=141417
+inside-ver-color=141417
+inside-wrong-color=141417
+inside-clear-color=141417
+
+key-hl-color=ff2e42
+bs-hl-color=9c3a44
+separator-color=00000000
+
+text-color=dedede
+text-ver-color=dedede
+text-wrong-color=ff2e42
+text-clear-color=dedede
+
+ring-width=5
+line-uses-ring=1
+
+indicator-radius=70
+indicator-x-position=0.5
+indicator-y-position=0.5
+
+font=0xProto Nerd Font Mono
+screenshots=0
+clock=1
