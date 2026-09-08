@@ -1,0 +1,9 @@
+module components
+Command Command.qml
+Calendar Calendar.qml
+Clock Clock.qml
+ControlPanel ControlPanel.qml
+DynamicIsland DynamicIsland.qml
+MediaPlayer MediaPlayer.qml
+Toggle Toggle.qml
+Workspaces Workspaces.qml

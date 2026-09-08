@@ -1,5 +1,25 @@
 # --- containers ---
+
 alias dev-build='cd "$HOME/dots/df" && podman build -f dev.docker -t dev'
-alias dev='podman run --rm -it -v dev-vol:/root/.local -v "$PWD:/work" -w /work dev '
+
+alias dev='podman run --rm -it \
+    -v dev-vol:/root/.local \
+    -v "$PWD:/work" \
+    -w /work \
+    -e WAYLAND_DISPLAY \
+    -e "XDG_RUNTIME_DIR=/run/user/$(id -u)" \
+    -v "$XDG_RUNTIME_DIR:/run/user/$(id -u)" \
+    dev'
+
 alias opencode-build='cd "$HOME/dots/df" && podman build -f opencode.docker -t opencode'
-alias opencode='podman run --rm -it -v opencode-vol:/root/.local -v "$PWD:/work" -w /work opencode '
+
+alias opencode='podman run --rm -it \
+    -v opencode-vol:/root/.local \
+    -v "$PWD:/work" \
+    -w /work \
+    opencode'
+
+
+# --- common programs ---
+
+alias nvim='dev nvim'

@@ -1,0 +1,3 @@
+module services
+WorkspaceService WorkspaceService.qml
+MediaService MediaService.qml
