@@ -143,267 +143,260 @@ Item {
 
     RowLayout {
         anchors.fill: parent
-        spacing: 10
+        spacing: 14
 
-        Rectangle {
-            Layout.preferredWidth: 146
-            Layout.fillHeight: true
-            radius: 14
-            color: "#e6121418"
-            border { width: 1; color: "#14ffffff" }
+        Row {
+            Layout.alignment: Qt.AlignVCenter
+            spacing: 12
 
-            Behavior on color {
-                ColorAnimation { duration: 100 }
+            Toggle {
+                id: wifiToggle
+                icon: "󰤨"
+                checked: root.wifiEnabled
+                toolTipText: root.wifiTooltip
+                onToggled: {
+                    root.wifiEnabled = !root.wifiEnabled
+                    wifiSet.running = true
+                }
             }
 
-            Row {
-                anchors.centerIn: parent
-                spacing: 12
-
-                Toggle {
-                    id: wifiToggle
-                    icon: "󰤨"
-                    checked: root.wifiEnabled
-                    toolTipText: root.wifiTooltip
-                    onToggled: {
-                        root.wifiEnabled = !root.wifiEnabled
-                        wifiSet.running = true
-                    }
-                }
-
-                Toggle {
-                    id: btToggle
-                    icon: "󰂯"
-                    checked: root.btEnabled
-                    toolTipText: root.btTooltip
-                    onToggled: {
-                        root.btEnabled = !root.btEnabled
-                        btSet.running = true
-                    }
+            Toggle {
+                id: btToggle
+                icon: "󰂯"
+                checked: root.btEnabled
+                toolTipText: root.btTooltip
+                onToggled: {
+                    root.btEnabled = !root.btEnabled
+                    btSet.running = true
                 }
             }
         }
 
-        Rectangle {
+        Item {
+            Layout.preferredWidth: 1
+            Layout.fillHeight: true
+
+            Rectangle {
+                anchors.centerIn: parent
+                width: 1
+                height: 18
+                color: "#14ffffff"
+            }
+        }
+
+        RowLayout {
             Layout.fillWidth: true
-            Layout.fillHeight: true
-            radius: 14
-            color: "#e6121418"
-            border { width: 1; color: "#14ffffff" }
+            Layout.alignment: Qt.AlignVCenter
+            spacing: 8
 
-            Behavior on color {
-                ColorAnimation { duration: 100 }
+            Text {
+                text: "󰕾"
+                color: "#86868b"
+                font.pixelSize: 16
             }
 
-            RowLayout {
-                anchors.fill: parent
-                anchors.leftMargin: 16
-                anchors.rightMargin: 16
-                spacing: 18
+            Slider {
+                id: audioSlider
+                Layout.fillWidth: true
+                Layout.preferredHeight: 18
+                from: 0; to: 1
+                value: root.audioVolume
+                onMoved: {
+                    root.audioVolume = value
+                    audioSet.running = true
+                }
 
-                RowLayout {
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-                    spacing: 8
+                background: Rectangle {
+                    x: audioSlider.leftPadding
+                    y: audioSlider.topPadding + audioSlider.availableHeight / 2 - height / 2
+                    width: audioSlider.availableWidth
+                    height: 3
+                    radius: 1.5
+                    color: "#1affffff"
 
-                    Text {
-                        text: "󰕾"
-                        color: "#a1a1aa"
-                        font.pixelSize: 16
-                    }
-
-                    Slider {
-                        id: audioSlider
-                        Layout.fillWidth: true
-                        Layout.preferredHeight: 18
-                        from: 0; to: 1
-                        value: root.audioVolume
-                        onMoved: {
-                            root.audioVolume = value
-                            audioSet.running = true
-                        }
-
-                        background: Rectangle {
-                            x: audioSlider.leftPadding
-                            y: audioSlider.topPadding + audioSlider.availableHeight / 2 - height / 2
-                            width: audioSlider.availableWidth
-                            height: 4
-                            radius: 2
-                            color: "#1affffff"
-
-                            Rectangle {
-                                width: audioSlider.visualPosition * parent.width
-                                height: parent.height
-                                radius: 2
-                                color: "#ff453a"
-                            }
-                        }
-
-                        handle: Rectangle {
-                            x: audioSlider.leftPadding + audioSlider.visualPosition * (audioSlider.availableWidth - width)
-                            y: audioSlider.topPadding + audioSlider.availableHeight / 2 - height / 2
-                            width: 13; height: 13
-                            radius: 6.5
-                            color: "#f5f5f7"
-                        }
+                    Rectangle {
+                        width: audioSlider.visualPosition * parent.width
+                        height: parent.height
+                        radius: 1.5
+                        color: "#ff453a"
                     }
                 }
 
-                RowLayout {
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-                    spacing: 8
-
-                    Text {
-                        text: "󰃟"
-                        color: "#a1a1aa"
-                        font.pixelSize: 16
-                    }
-
-                    Slider {
-                        id: brightSlider
-                        Layout.fillWidth: true
-                        Layout.preferredHeight: 18
-                        from: 0; to: 1
-                        value: root.brightness
-                        onMoved: {
-                            root.brightness = value
-                            brightSet.running = true
-                        }
-
-                        background: Rectangle {
-                            x: brightSlider.leftPadding
-                            y: brightSlider.topPadding + brightSlider.availableHeight / 2 - height / 2
-                            width: brightSlider.availableWidth
-                            height: 4
-                            radius: 2
-                            color: "#1affffff"
-
-                            Rectangle {
-                                width: brightSlider.visualPosition * parent.width
-                                height: parent.height
-                                radius: 2
-                                color: "#ff453a"
-                            }
-                        }
-
-                        handle: Rectangle {
-                            x: brightSlider.leftPadding + brightSlider.visualPosition * (brightSlider.availableWidth - width)
-                            y: brightSlider.topPadding + brightSlider.availableHeight / 2 - height / 2
-                            width: 13; height: 13
-                            radius: 6.5
-                            color: "#f5f5f7"
-                        }
-                    }
+                handle: Rectangle {
+                    x: audioSlider.leftPadding + audioSlider.visualPosition * (audioSlider.availableWidth - width)
+                    y: audioSlider.topPadding + audioSlider.availableHeight / 2 - height / 2
+                    width: 12; height: 12
+                    radius: 6
+                    color: "#f5f5f7"
                 }
             }
         }
 
-        Rectangle {
-            Layout.preferredWidth: 150
+        Item {
+            Layout.preferredWidth: 1
             Layout.fillHeight: true
-            radius: 14
-            color: "#e6121418"
-            border { width: 1; color: "#14ffffff" }
 
-            Behavior on color {
-                ColorAnimation { duration: 100 }
+            Rectangle {
+                anchors.centerIn: parent
+                width: 1
+                height: 18
+                color: "#14ffffff"
+            }
+        }
+
+        RowLayout {
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignVCenter
+            spacing: 8
+
+            Text {
+                text: "󰃟"
+                color: "#86868b"
+                font.pixelSize: 16
             }
 
-            Row {
+            Slider {
+                id: brightSlider
+                Layout.fillWidth: true
+                Layout.preferredHeight: 18
+                from: 0; to: 1
+                value: root.brightness
+                onMoved: {
+                    root.brightness = value
+                    brightSet.running = true
+                }
+
+                background: Rectangle {
+                    x: brightSlider.leftPadding
+                    y: brightSlider.topPadding + brightSlider.availableHeight / 2 - height / 2
+                    width: brightSlider.availableWidth
+                    height: 3
+                    radius: 1.5
+                    color: "#1affffff"
+
+                    Rectangle {
+                        width: brightSlider.visualPosition * parent.width
+                        height: parent.height
+                        radius: 1.5
+                        color: "#ff453a"
+                    }
+                }
+
+                handle: Rectangle {
+                    x: brightSlider.leftPadding + brightSlider.visualPosition * (brightSlider.availableWidth - width)
+                    y: brightSlider.topPadding + brightSlider.availableHeight / 2 - height / 2
+                    width: 12; height: 12
+                    radius: 6
+                    color: "#f5f5f7"
+                }
+            }
+        }
+
+        Item {
+            Layout.preferredWidth: 1
+            Layout.fillHeight: true
+
+            Rectangle {
                 anchors.centerIn: parent
-                spacing: 7
+                width: 1
+                height: 18
+                color: "#14ffffff"
+            }
+        }
 
-                Text {
-                    width: 30
-                    height: 30
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                    text: "󰌾"
-                    color: lockArea.containsMouse ? "#f5f5f7" : "#a1a1aa"
-                    font.pixelSize: 16
-                    font.family: "0xProto Nerd Font"
+        Row {
+            Layout.alignment: Qt.AlignVCenter
+            spacing: 6
 
-                    Behavior on color {
-                        ColorAnimation { duration: 70 }
-                    }
+            Text {
+                width: 26
+                height: 26
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                text: "󰌾"
+                color: lockArea.containsMouse ? "#f5f5f7" : "#86868b"
+                font.pixelSize: 16
+                font.family: "0xProto Nerd Font"
 
-                    MouseArea {
-                        id: lockArea
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        cursorShape: Qt.PointingHandCursor
-                        onClicked: lockProc.running = true
-                    }
+                Behavior on color {
+                    ColorAnimation { duration: 70 }
                 }
 
-                Text {
-                    width: 30
-                    height: 30
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                    text: "󰜉"
-                    color: rebootArea.containsMouse ? "#f5f5f7" : "#a1a1aa"
-                    font.pixelSize: 16
-                    font.family: "0xProto Nerd Font"
+                MouseArea {
+                    id: lockArea
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: lockProc.running = true
+                }
+            }
 
-                    Behavior on color {
-                        ColorAnimation { duration: 70 }
-                    }
+            Text {
+                width: 26
+                height: 26
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                text: "󰜉"
+                color: rebootArea.containsMouse ? "#f5f5f7" : "#86868b"
+                font.pixelSize: 16
+                font.family: "0xProto Nerd Font"
 
-                    MouseArea {
-                        id: rebootArea
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        cursorShape: Qt.PointingHandCursor
-                        onClicked: rebootProc.running = true
-                    }
+                Behavior on color {
+                    ColorAnimation { duration: 70 }
                 }
 
-                Text {
-                    width: 30
-                    height: 30
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                    text: ""
-                    color: sleepArea.containsMouse ? "#f5f5f7" : "#a1a1aa"
-                    font.pixelSize: 16
-                    font.family: "0xProto Nerd Font"
+                MouseArea {
+                    id: rebootArea
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: rebootProc.running = true
+                }
+            }
 
-                    Behavior on color {
-                        ColorAnimation { duration: 70 }
-                    }
+            Text {
+                width: 26
+                height: 26
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                text: ""
+                color: sleepArea.containsMouse ? "#f5f5f7" : "#86868b"
+                font.pixelSize: 16
+                font.family: "0xProto Nerd Font"
 
-                    MouseArea {
-                        id: sleepArea
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        cursorShape: Qt.PointingHandCursor
-                        onClicked: suspendProc.running = true
-                    }
+                Behavior on color {
+                    ColorAnimation { duration: 70 }
                 }
 
-                Text {
-                    width: 30
-                    height: 30
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                    text: "󰐥"
-                    color: powerArea.containsMouse ? "#ff453a" : "#a1a1aa"
-                    font.pixelSize: 16
-                    font.family: "0xProto Nerd Font"
+                MouseArea {
+                    id: sleepArea
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: suspendProc.running = true
+                }
+            }
 
-                    Behavior on color {
-                        ColorAnimation { duration: 70 }
-                    }
+            Text {
+                width: 26
+                height: 26
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                text: "󰐥"
+                color: powerArea.containsMouse ? "#ff453a" : "#86868b"
+                font.pixelSize: 16
+                font.family: "0xProto Nerd Font"
 
-                    MouseArea {
-                        id: powerArea
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        cursorShape: Qt.PointingHandCursor
-                        onClicked: powerProc.running = true
-                    }
+                Behavior on color {
+                    ColorAnimation { duration: 70 }
+                }
+
+                MouseArea {
+                    id: powerArea
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: powerProc.running = true
                 }
             }
         }

@@ -12,13 +12,10 @@ RowLayout {
         id: service
     }
 
-    Rectangle {
-        Layout.preferredWidth: 46
-        Layout.preferredHeight: 46
-        Layout.alignment: Qt.AlignTop
-        radius: width / 2
-        color: "#e616161a"
-        border { width: 1; color: "#14ffffff" }
+    Item {
+        Layout.preferredWidth: 44
+        Layout.preferredHeight: 44
+        Layout.alignment: Qt.AlignVCenter
 
         Canvas {
             id: art
@@ -51,8 +48,8 @@ RowLayout {
         Text {
             anchors.centerIn: parent
             text: "♪"
-            color: "#a1a1aa"
-            font.pixelSize: 19
+            color: "#86868b"
+            font.pixelSize: 18
             visible: service.artUrl === ""
         }
     }
@@ -60,9 +57,6 @@ RowLayout {
     ColumnLayout {
         id: info
         Layout.fillWidth: true
-        Layout.preferredWidth: root.width - 56
-        Layout.minimumWidth: root.width - 56
-        Layout.maximumWidth: root.width - 56
         Layout.alignment: Qt.AlignVCenter
         spacing: 2
 
@@ -75,7 +69,7 @@ RowLayout {
             text: service.title || "Nothing playing"
             color: "#f5f5f7"
             elide: Text.ElideRight
-            font { pixelSize: 11; bold: true }
+            font { pixelSize: 10; bold: true }
         }
 
         Text {
@@ -94,82 +88,73 @@ RowLayout {
         Row {
             spacing: 6
 
-            Rectangle {
+            Item {
                 width: 26
                 height: 26
-                radius: 8
-                color: prevHover.hovered ? "#1affffff" : "#00000000"
-
-                Behavior on color {
-                    ColorAnimation { duration: 90 }
-                }
 
                 Text {
                     anchors.centerIn: parent
                     text: "󰒮"
-                    color: prevHover.hovered ? "#f5f5f7" : "#86868b"
-                    font { pixelSize: 16; family: "0xProto Nerd Font" }
+                    color: prev.containsMouse ? "#f5f5f7" : "#86868b"
+                    font { pixelSize: 15; family: "0xProto Nerd Font" }
+
+                    Behavior on color {
+                        ColorAnimation { duration: 70 }
+                    }
                 }
 
-                HoverHandler { id: prevHover }
                 MouseArea {
+                    id: prev
                     anchors.fill: parent
+                    hoverEnabled: true
                     cursorShape: Qt.PointingHandCursor
                     onClicked: service.previous()
                 }
             }
 
-            Rectangle {
+            Item {
                 width: 26
                 height: 26
-                radius: 8
-                color: playHover.hovered
-                    ? (service.playing ? "#26ff453a" : "#1affffff")
-                    : (service.playing ? "#1aff453a" : "#00000000")
-
-                Behavior on color {
-                    ColorAnimation { duration: 90 }
-                }
 
                 Text {
                     anchors.centerIn: parent
                     text: service.playing ? "󰏤" : "󰐊"
-                    color: (playHover.hovered || service.playing) ? "#ff453a" : "#86868b"
-                    font { pixelSize: 16; family: "0xProto Nerd Font" }
+                    color: (play.containsMouse || service.playing) ? "#ff453a" : "#86868b"
+                    font { pixelSize: 15; family: "0xProto Nerd Font" }
 
                     Behavior on color {
-                        ColorAnimation { duration: 90 }
+                        ColorAnimation { duration: 70 }
                     }
                 }
 
-                HoverHandler { id: playHover }
                 MouseArea {
+                    id: play
                     anchors.fill: parent
+                    hoverEnabled: true
                     cursorShape: Qt.PointingHandCursor
                     onClicked: service.toggle()
                 }
             }
 
-            Rectangle {
+            Item {
                 width: 26
                 height: 26
-                radius: 8
-                color: nextHover.hovered ? "#1affffff" : "#00000000"
-
-                Behavior on color {
-                    ColorAnimation { duration: 90 }
-                }
 
                 Text {
                     anchors.centerIn: parent
                     text: "󰒭"
-                    color: nextHover.hovered ? "#f5f5f7" : "#86868b"
-                    font { pixelSize: 16; family: "0xProto Nerd Font" }
+                    color: next.containsMouse ? "#f5f5f7" : "#86868b"
+                    font { pixelSize: 15; family: "0xProto Nerd Font" }
+
+                    Behavior on color {
+                        ColorAnimation { duration: 70 }
+                    }
                 }
 
-                HoverHandler { id: nextHover }
                 MouseArea {
+                    id: next
                     anchors.fill: parent
+                    hoverEnabled: true
                     cursorShape: Qt.PointingHandCursor
                     onClicked: service.next()
                 }

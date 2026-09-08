@@ -4,154 +4,119 @@ import QtQuick.Layouts
 Rectangle {
     id: root
 
-    property bool hovered: hover.hovered
     property bool showControls: false
-
-    property int level: !root.hovered ? 0 : (root.showControls ? 2 : 1)
+    property bool shown: false
+    property bool selfHovered: selfHover.hovered
 
     anchors {
         top: parent.top
+        topMargin: root.shown ? 0 : -root.height
         horizontalCenter: parent.horizontalCenter
     }
 
-    width: root.level === 0 ? 300 : (root.level === 1 ? 640 : 720)
-    height: root.level === 0 ? 15 : (root.level === 1 ? 65 : 70)
-    radius: height / 2
-    color: "#f70a0a0d"
-    clip: true
+    width: root.showControls ? 600 : 520
+    height: 62
+    color: "transparent"
+
+    Behavior on anchors.topMargin {
+        NumberAnimation {
+            duration: 400
+            easing.type: Easing.OutCubic
+        }
+    }
 
     Behavior on width {
         NumberAnimation {
-            duration: 320
+            duration: 240
             easing.type: Easing.OutCubic
         }
     }
 
-    Behavior on height {
-        NumberAnimation {
-            duration: 420
-            easing.type: Easing.OutCubic
-        }
-    }
-
-    onHoveredChanged: if (!root.hovered) root.showControls = false
     onShowControlsChanged: if (root.showControls) controlView.refresh()
 
+    Canvas {
+        id: bg
+        anchors.fill: parent
+        antialiasing: true
+
+        property real corner: 18
+
+        onPaint: {
+            var ctx = getContext("2d")
+            var w = width
+            var h = height
+            var r = bg.corner
+            ctx.clearRect(0, 0, w, h)
+            ctx.beginPath()
+            ctx.moveTo(r, h)
+            ctx.arcTo(0, h, 0, h - r, r)
+            ctx.lineTo(0, 0)
+            ctx.lineTo(w, 0)
+            ctx.lineTo(w, h - r)
+            ctx.arcTo(w, h, w - r, h, r)
+            ctx.closePath()
+            ctx.fillStyle = "#66090a0d"
+            ctx.fill()
+        }
+    }
+
     HoverHandler {
-        id: hover
+        id: selfHover
     }
 
-    Workspaces {
-        id: workspaces
-        anchors {
-            left: parent.left
-            leftMargin: 10
-            verticalCenter: parent.verticalCenter
-        }
-        opacity: root.hovered ? 0 : 1
-        visible: opacity > 0
-
-        Behavior on opacity {
-            NumberAnimation {
-                duration: 100
-                easing.type: Easing.OutCubic
+    MouseArea {
+        anchors.fill: parent
+        acceptedButtons: Qt.RightButton
+        propagateComposedEvents: true
+        onClicked: function(mouse) {
+            if (mouse.button === Qt.RightButton) {
+                root.showControls = !root.showControls
             }
-        }
-    }
-
-    Clock {
-        id: collapsedClock
-        anchors.centerIn: parent
-        pixelSize: 10
-        opacity: root.hovered ? 0 : 1
-        visible: opacity > 0
-
-        Behavior on opacity {
-            NumberAnimation {
-                duration: 120
-                easing.type: Easing.OutCubic
-            }
-        }
-    }
-
-    Clock {
-        id: expandedClock
-        anchors.centerIn: parent
-        pixelSize: 22
-        opacity: root.hovered && !root.showControls ? 1 : 0
-        visible: opacity > 0
-
-        Behavior on opacity {
-            NumberAnimation {
-                duration: 120
-                easing.type: Easing.OutCubic
-            }
+            mouse.accepted = false
         }
     }
 
     Item {
-        id: expanded
-
-        visible: root.hovered || opacity > 0
-        opacity: root.hovered ? 1 : 0
-
         anchors.fill: parent
-        anchors.margins: 14
-
-        MouseArea {
-            anchors.fill: parent
-            acceptedButtons: Qt.RightButton
-            propagateComposedEvents: true
-            onClicked: function(mouse) {
-                if (mouse.button === Qt.RightButton) {
-                    root.showControls = !root.showControls
-                }
-                mouse.accepted = false
-            }
-        }
-
-        Behavior on opacity {
-            NumberAnimation {
-                duration: 100
-                easing.type: Easing.OutCubic
-            }
-        }
+        anchors.margins: 12
 
         RowLayout {
             id: mainView
             anchors.fill: parent
-            spacing: 8
+            spacing: 14
+
             opacity: root.showControls ? 0 : 1
             visible: opacity > 0
 
             Behavior on opacity {
                 NumberAnimation {
-                    duration: 100
+                    duration: 120
                     easing.type: Easing.OutCubic
                 }
             }
 
-            MediaPlayer {
-                Layout.preferredWidth: 215
-                Layout.minimumWidth: 215
-                Layout.maximumWidth: 215
-                Layout.fillHeight: true
+            Workspaces {
+                Layout.alignment: Qt.AlignVCenter
             }
 
             Item {
                 Layout.fillWidth: true
-                Layout.fillHeight: true
-
-                Rectangle {
-                    anchors.centerIn: parent
-                    width: 1
-                    height: 26
-                    color: "#14ffffff"
-                }
             }
 
-            Calendar {
-                Layout.preferredWidth: 200
+            Clock {
+                id: expandedClock
+                pixelSize: 20
+                Layout.alignment: Qt.AlignVCenter
+            }
+
+            Item {
+                Layout.fillWidth: true
+            }
+
+            MediaPlayer {
+                Layout.preferredWidth: 210
+                Layout.minimumWidth: 210
+                Layout.maximumWidth: 210
                 Layout.alignment: Qt.AlignVCenter
             }
         }
@@ -164,18 +129,10 @@ Rectangle {
 
             Behavior on opacity {
                 NumberAnimation {
-                    duration: 100
+                    duration: 120
                     easing.type: Easing.OutCubic
                 }
             }
         }
-    }
-
-    Rectangle {
-        anchors.fill: parent
-        z: 11
-        radius: parent.radius
-        color: "transparent"
-        border { width: 1; color: "#14ffffff" }
     }
 }

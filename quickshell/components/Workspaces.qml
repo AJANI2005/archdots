@@ -5,8 +5,7 @@ import "../services"
 Row {
     id: root
 
-    spacing: 5
-    opacity: 1
+    spacing: 7
 
     property int activeWorkspace: ws.value
 
@@ -23,8 +22,8 @@ Row {
 
             property int clientCount: tagClients.value
 
-            implicitWidth: numeral.implicitWidth
-            implicitHeight: 14
+            implicitWidth: 8
+            implicitHeight: 8
 
             Command {
                 id: tagClients
@@ -36,22 +35,16 @@ Row {
                 interval: 100
             }
 
-            Text {
-                id: numeral
+            Rectangle {
                 anchors.centerIn: parent
-                text: ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"][i - 1]
-                color: i === root.activeWorkspace ? "#ff453a" : "#f5f5f7"
-
-                font {
-                    pixelSize: 10
-                    bold: true
-                    family: "0xProto Nerd Font"
-                }
+                width: 4
+                height: 4
+                radius: 2
+                color: i === root.activeWorkspace
+                    ? "#ff453a"
+                    : (clientCount > 0 ? "#b3f5f5f7" : "#00000000")
+                opacity: (clientCount > 0 || i === root.activeWorkspace) ? 1 : 0
             }
-
-            opacity: clientCount > 0
-                ? (i === root.activeWorkspace ? 1 : 0.25)
-                : 0
         }
     }
 }

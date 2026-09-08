@@ -11,13 +11,25 @@ Scope {
             screen: modelData
 
             anchors { top: true; left: true; right: true }
-            implicitHeight: 70
-            exclusiveZone: 15
+            implicitHeight: 62
+            exclusiveZone: 0
             color: "transparent"
-            mask: Region { item: island }
+
+            Rectangle {
+                id: strip
+                anchors.fill: parent
+                color: "transparent"
+
+                HoverHandler {
+                    id: stripHover
+                }
+            }
+
+            mask: Region { item: strip }
 
             DynamicIsland {
                 id: island
+                shown: stripHover.hovered || island.selfHovered
             }
         }
     }
