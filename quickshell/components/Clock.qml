@@ -8,17 +8,12 @@ Text {
 
     text: clock.value
     color: "#f5f5f7"
+    antialiasing: true
 
     font {
         pixelSize: root.pixelSize
         bold: true
-    }
-
-    Behavior on pixelSize {
-        NumberAnimation {
-            duration: 350
-            easing.type: Easing.OutCubic
-        }
+        letterSpacing: 1
     }
 
     Command {

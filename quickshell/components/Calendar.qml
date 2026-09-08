@@ -34,7 +34,7 @@ Column {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: parent.d.getDate()
                     color: parent.d.toDateString() === root.today.toDateString()
-                        ? "#0a84ff"
+                        ? "#ff453a"
                         : "#86868b"
 
                     font {

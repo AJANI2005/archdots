@@ -10,6 +10,8 @@ Item {
     property int interval: 0
     property var value: null
 
+    function run() { process.running = true }
+
     Process {
         id: process
         command: root.command

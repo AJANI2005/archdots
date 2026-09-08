@@ -7,32 +7,35 @@ Rectangle {
     property bool hovered: hover.hovered
     property bool showControls: false
 
+    property int level: !root.hovered ? 0 : (root.showControls ? 2 : 1)
+
     anchors {
         top: parent.top
         horizontalCenter: parent.horizontalCenter
     }
 
-    width: hovered ? 540 : 300
-    height: hovered ? 65 : 15
+    width: root.level === 0 ? 300 : (root.level === 1 ? 640 : 720)
+    height: root.level === 0 ? 15 : (root.level === 1 ? 65 : 70)
     radius: height / 2
-    color: "#e620222a"
+    color: "#f70a0a0d"
     clip: true
 
     Behavior on width {
         NumberAnimation {
-            duration: 350
+            duration: 320
             easing.type: Easing.OutCubic
         }
     }
 
     Behavior on height {
         NumberAnimation {
-            duration: 350
+            duration: 420
             easing.type: Easing.OutCubic
         }
     }
 
     onHoveredChanged: if (!root.hovered) root.showControls = false
+    onShowControlsChanged: if (root.showControls) controlView.refresh()
 
     HoverHandler {
         id: hover
@@ -50,22 +53,37 @@ Rectangle {
 
         Behavior on opacity {
             NumberAnimation {
-                duration: 180
+                duration: 100
                 easing.type: Easing.OutCubic
             }
         }
     }
 
     Clock {
-        id: mainClock
+        id: collapsedClock
         anchors.centerIn: parent
-        pixelSize: root.hovered ? 22 : 10
-        opacity: root.hovered && root.showControls ? 0 : 1
+        pixelSize: 10
+        opacity: root.hovered ? 0 : 1
         visible: opacity > 0
 
         Behavior on opacity {
             NumberAnimation {
-                duration: 180
+                duration: 120
+                easing.type: Easing.OutCubic
+            }
+        }
+    }
+
+    Clock {
+        id: expandedClock
+        anchors.centerIn: parent
+        pixelSize: 22
+        opacity: root.hovered && !root.showControls ? 1 : 0
+        visible: opacity > 0
+
+        Behavior on opacity {
+            NumberAnimation {
+                duration: 120
                 easing.type: Easing.OutCubic
             }
         }
@@ -78,7 +96,7 @@ Rectangle {
         opacity: root.hovered ? 1 : 0
 
         anchors.fill: parent
-        anchors.margins: 10
+        anchors.margins: 14
 
         MouseArea {
             anchors.fill: parent
@@ -94,7 +112,7 @@ Rectangle {
 
         Behavior on opacity {
             NumberAnimation {
-                duration: 180
+                duration: 100
                 easing.type: Easing.OutCubic
             }
         }
@@ -108,19 +126,28 @@ Rectangle {
 
             Behavior on opacity {
                 NumberAnimation {
-                    duration: 180
+                    duration: 100
                     easing.type: Easing.OutCubic
                 }
             }
 
             MediaPlayer {
                 Layout.preferredWidth: 215
+                Layout.minimumWidth: 215
+                Layout.maximumWidth: 215
                 Layout.fillHeight: true
             }
 
             Item {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+
+                Rectangle {
+                    anchors.centerIn: parent
+                    width: 1
+                    height: 26
+                    color: "#14ffffff"
+                }
             }
 
             Calendar {
@@ -137,26 +164,10 @@ Rectangle {
 
             Behavior on opacity {
                 NumberAnimation {
-                    duration: 180
+                    duration: 100
                     easing.type: Easing.OutCubic
                 }
             }
-        }
-    }
-
-    Rectangle {
-        anchors {
-            top: parent.top
-            left: parent.left
-            right: parent.right
-        }
-        height: parent.height
-        z: 10
-        gradient: Gradient {
-            GradientStop { position: 0.0; color: "#14ffffff" }
-            GradientStop { position: 0.4; color: "#00000000" }
-            GradientStop { position: 0.55; color: "#00000000" }
-            GradientStop { position: 1.0; color: "#28000000" }
         }
     }
 
@@ -165,6 +176,6 @@ Rectangle {
         z: 11
         radius: parent.radius
         color: "transparent"
-        border { width: 1; color: "#26ffffff" }
+        border { width: 1; color: "#14ffffff" }
     }
 }
