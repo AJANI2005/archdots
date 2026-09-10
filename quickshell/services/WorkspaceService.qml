@@ -5,7 +5,7 @@ import "../components"
 Item {
     id: root
 
-    property int value: ws.value
+    property int value: ws.value ?? 0
 
     Command {
         id: ws
@@ -13,7 +13,10 @@ Item {
             "sh", "-c",
             "mmsg get all-tags | jq -r '.all_tags[].tags[] | select(.is_active == true).index'"
         ]
-        parser: data => parseInt(data.trim(), 10)
+        parser: data => {
+            const n = parseInt(data.trim(), 10)
+            return Number.isNaN(n) ? 0 : n
+        }
         interval: 100
     }
 }
